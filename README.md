@@ -1,268 +1,233 @@
-# RoadRank — HDI (Safe Driving Prediction & Recommendation System)
+<p align="left">
+  <img src="./frontend/logohdi.png" alt="RoadRank Logo" width="100" style="float:left; margin-right:10px;"/>
+  <h1 style="display:inline;">RoadRank</h1>
+</p>
 
-A full-stack prototype for safe driving prediction using XGBoost. Drivers complete tasks through an interactive dashboard to improve their HDI (Safe Driving Index) score, with progress persisted to Excel.
-
----
-
-## 📌 Overview
-
-HDI analyzes driving behavior and predicts accident probability using an XGBoost regression model. The system provides:
-- **Real-time HDI score** (0–100 scale) based on recent driving metrics
-- **Interactive task system** — drivers complete tasks to improve their score
-- **Data persistence** — task completions are saved to `data/Trip Summary.xlsx`
-- **Personalized recommendations** based on predicted behavior
+**AI-Powered Safe Driving Prediction & Recommendation System**
 
 ---
 
-## 🚗 Key Features
+## 🚩 Problem  
 
-- **Driving behavior analysis** for the last 30 days
-- **Accident probability prediction** using XGBoost (RMSE: 5.27, MAE: 2.71, R²: 0.974)
-- **HDI (Safe Driving Index)** — a score from 0 to 100
-- **Smart recommendation engine** based on model output
-- **Interactive UI prototype** featuring:
-  - HDI gauge and accident probability display
-  - Task list with points and completion status
-  - Violations overview
-  - Rewards and progress tracking
-  - Real-time notifications
+Road safety remains a critical challenge, with thousands of accidents occurring annually due to unsafe driving behaviors. Traditional methods of assessing driver safety are often reactive, addressing issues only after accidents occur.
 
----
+There is a need for a proactive system that can:
+- Analyze driving behavior patterns in real-time
+- Predict accident probability before incidents happen
+- Provide personalized recommendations to improve driving safety
+- Motivate drivers to maintain safe driving habits through gamification
 
-## 🚀 Quick Start
-
-### Prerequisites
-- Python 3.10+ and a virtual environment (project uses `.venv`)
-
-### 1. Start the Backend Server
-
-```powershell
-cd C:\Users\HP\RoadRank-Absher-hackathon
-python -m uvicorn backend.main:app --reload --host 127.0.0.1 --port 8000
-```
-
-Expected output:
-```
-INFO:     Uvicorn running on http://127.0.0.1:8000
-INFO:     ✓ Model loaded from .../xgboost_model.joblib
-INFO:     Application startup complete.
-```
-
-### 2. Open the Frontend
-
-Open in your browser:
-```
-file:///c:/Users/HP/RoadRank-Absher-hackathon/frontend/HDI.html
-```
-
-### 3. Test Task Completion
-
-Navigate to the **"المهام"** (Tasks) tab and click a checkbox to complete a task. You should see:
-- ✓ Checkbox marks as complete
-- Score improves (points-based)
-- Green notification: "تم إكمال المهمة! حصلت على X نقاط"
-- New row added to `data/Trip Summary.xlsx`
+**RoadRank** was built to address this challenge by leveraging machine learning to predict accident probability and provide actionable insights for safer driving.
 
 ---
 
-## 📊 API Summary
+## 💡 Solution  
 
-### Core Endpoints
+**RoadRank** uses machine learning to analyze driving behavior and predict accident probability, providing drivers with a personalized Safe Driving Index (HDI).
 
-| Method | Endpoint | Purpose |
-|--------|----------|---------|
-| `GET` | `/health` | Check server status and model load state |
-| `POST` | `/predict` | Predict score from driving metrics |
-| `POST` | `/complete-task` | Mark a task complete, update metrics, recalculate score |
-| `GET` | `/driver/{driver_id}` | Retrieve driver record and predicted score |
-| `GET` | `/driver/{driver_id}/tasks` | List all tasks for a driver |
-| `GET` | `/drivers` | List sample driver IDs from the dataset |
-
-### Example Requests (PowerShell)
-
-```powershell
-# Get driver and predicted score
-Invoke-RestMethod -Uri 'http://localhost:8000/driver/DRV001' -Method GET | ConvertTo-Json -Depth 5
-
-# Complete a task
-Invoke-RestMethod -Uri 'http://localhost:8000/complete-task' -Method POST `
-  -ContentType 'application/json' `
-  -Body '{
-    "driver_id": "DRV001",
-    "task_id": "awareness_video",
-    "task_title": "مشاهدة فيديو توعوي إلزامي",
-    "points_earned": 5
-  }' | ConvertTo-Json -Depth 5
-```
-
-Interactive API docs available at: `http://localhost:8000/docs` (Swagger UI)
+**How it works:**  
+1. **Data Collection:** Gathers driving behavior data from the last 30 days.
+2. **Behavior Analysis:** Processes speed patterns, violations, and driving consistency.
+3. **Accident Prediction:** Uses XGBoost model to estimate accident probability for the current month.
+4. **HDI Calculation:** Generates a Safe Driving Index score from 0 to 100.
+5. **Smart Recommendations:** Provides personalized tasks and suggestions to improve driving safety.
+6. **Rewards & Motivation:** Gamifies safe driving through levels, rewards, and achievements.
 
 ---
 
-## 🧠 Machine Learning Model
+## 🗂️ Project Structure 
 
-### Model Type
-- **Algorithm**: XGBoost Regressor
-- **Target**: Safe Driving Score (0–100)
-- **Training Data**: Accident data + synthetic driver behavior + roadway environment
-
-### Model Performance
-- **RMSE**: 5.27
-- **MAE**: 2.71
-- **R² Score**: 0.974
-
-### Features (17 total)
-- `driver_id`, `driver_category`, `driver_category_ar` (categorical)
-- `avg_speed`, `max_speed`, `speeding_percentage` (speed metrics)
-- `harsh_brakes_count`, `harsh_accels_count`, `lane_changes_count` (behavior)
-- `avg_congestion`, `avg_visibility` (environment)
-- `road_type`, `actual_driver_type`, `time_of_day`, `weather` (context)
-- `recommendation`, `recommendation_ar` (model output/feedback)
-
----
-
-## 🎯 Task System
-
-### Available Tasks
-
-1. **Awareness Video** (5 points)
-   - Title: "مشاهدة فيديو توعوي إلزامي"
-   - Improves: harsh brakes & acceleration
-
-2. **License Renewal** (10 points)
-   - Title: "تجديد رخصة القيادة"
-   - Improves: average speed
-
-3. **Vehicle Inspection** (8 points)
-   - Title: "فحص دوري للمركبة"
-   - Improves: max speed
-
-4. **Insurance Renewal** (5 points)
-   - Title: "تجديد التأمين"
-   - Improves: traffic violations
-
-5. **Vehicle Update** (3 points)
-   - Title: "تحديث بيانات المركبة"
-   - Improves: average speed
-
-### Task Completion Flow
-
-When a driver completes a task:
-1. **Frontend** sends POST `/complete-task` request
-2. **Backend**:
-   - Finds the driver in `data/Trip Summary.xlsx`
-   - Applies metric improvements (task-specific)
-   - Appends a new record with task metadata and timestamp
-   - Runs XGBoost model with updated metrics
-   - Returns new `safe_driving_score` and score improvement
-3. **Frontend**:
-   - Marks checkbox as complete (✓)
-   - Animates score increase smoothly
-   - Shows success notification with points earned
-   - Updates UI display
-
----
-
-## 🗂️ Data Pipeline
-
-1. Data ingestion and cleaning
-2. Feature encoding and normalization
-3. Merging datasets (roadway + accident + behavior)
-4. Training XGBoost model
-5. Serializing model + encoders to joblib files
-6. Backend loads and uses model for predictions
-7. Frontend calls API to fetch scores and persist task completions to Excel  
-
----
-
-## 🧩 Recommendation System
-
-The recommendation engine generates personalized suggestions based on model output:
-- Reducing speeding behavior
-- Completing specific tasks to raise the HDI
-- Avoiding high-risk driving patterns
-- Paying outstanding violations
-- Improving consistency in safe driving  
-
----
-
-## � Testing & Troubleshooting
-
-### Test Scenario 1: Single Task
-1. Start backend
-2. Open frontend
-3. Click one pending task checkbox
-4. Verify:
-   - Checkbox marks as ✓
-   - Score increases (~5 points)
-   - Green notification appears
-   - New row in Excel with timestamp
-
-### Test Scenario 2: Multiple Tasks
-1. Complete 3 different tasks
-2. Verify cumulative score improvement
-3. Check Excel has 3 new rows with all task data
-
-### Test Scenario 3: Data Persistence
-1. Complete a task (checkbox marks)
-2. Refresh the page (F5)
-3. Verify checkbox still shows as complete (from Excel)
-
-### Common Issues
-
-**Issue: Connection Error ("خطأ في الاتصال")**
-- Ensure backend is running: `python -m uvicorn backend.main:app --reload`
-- Check port 8000 is free: `netstat -ano | findstr :8000`
-
-**Issue: Excel file locked**
-- Close `data/Trip Summary.xlsx` if open in Excel
-- Ensure backend has write permissions
-
-**Issue: Task won't mark complete**
-- Open browser console (F12) to see errors
-- Verify `/health` endpoint responds: `Invoke-RestMethod http://localhost:8000/health`
-
----
-
-## 📁 Project Structure
-
-```
+```bash
 ROADRANK-ABSHER-HACKATHON/
-├── backend/
-│   └── main.py                    # FastAPI server (predictions, task endpoints)
-├── data/
+│
+├── Model/                           # Machine learning model and training
+│   ├── XGBoost.ipynb                # Model training notebook
+│   ├── encoders.joblib              # Feature encoders
+│   └── xgboost_model.joblib         # Trained XGBoost model
+│
+├── backend/                         # Backend API and server logic
+│   └── main.py                      # FastAPI application entry point
+│
+├── data/                            # Training and testing datasets
 │   ├── Riyadh Roadway Environment.xlsx
 │   ├── Traffic Accident Statistics.xlsx
-│   └── Trip Summary.xlsx          # Driver data & task completion records
-├── frontend/
-│   └── HDI.html                   # Interactive dashboard
-├── Model/
-│   ├── xgboost_model.joblib       # Trained XGBoost regressor
-│   ├── encoders.joblib            # Feature encoders (categorical mappings)
-│   └── XGBoost.ipynb              # Model training notebook
-└── README.md                       # This file
+│   └── Trip Summary.xlsx
+│
+├── frontend/                        # User interface
+│   ├── HDI.html                     # Interactive UI prototype
+│   └── logohdi.png                  # RoadRank logo
+│
+└── README.md                        # Project documentation
 ```
+
+---
+
+## 🚗 Key Features  
+
+- **30-Day Driving Behavior Analysis** — Comprehensive evaluation of recent driving patterns
+- **Accident Probability Prediction** — ML-powered risk assessment using XGBoost
+- **HDI (Safe Driving Index)** — Personalized score from 0 to 100
+- **Smart Recommendation Engine** — AI-generated suggestions based on driving behavior
+- **Interactive UI Prototype** featuring:
+  - HDI main gauge visualization
+  - Real-time accident probability display
+  - Violations tracking and history
+  - Personalized tasks & recommendations
+  - Rewards and leveling system
+  - Detailed driving indicators dashboard
+
+---
+
+## 🧠 Machine Learning Model  
+
+We trained an **XGBoost regression model** using:  
+- Historical accident data from Riyadh
+- Synthetic driver behavior patterns
+- Roadway environment characteristics
+
+### **Why XGBoost?**
+
+We selected XGBoost due to its:
+- **High performance on structured/tabular data** — Ideal for our driving behavior dataset
+- **Ability to model non-linear relationships** — Captures complex driving behavior patterns
+- **Robustness against missing or skewed data** — Handles real-world data imperfections
+- **Minimal need for extensive hyperparameter tuning** — Efficient development cycle
+- **Strong interpretability** — Feature importance metrics help explain predictions
+
+### **Key Features Used in the Model**
+
+The model was trained on behavioral and environmental signals strongly correlated with accident risk, including:
+
+- **Average driving speed** — Overall speed patterns
+- **Speed variance & extreme speeding frequency** — Consistency and risk-taking behavior
+- **Harsh braking events** — Sudden stops indicating reactive driving
+- **Trip duration & distance** — Exposure to road risks
+- **Night-time driving ratio** — Higher-risk time periods
+- **Violation count (past month)** — Historical rule-breaking behavior
+- **Road environment risk level** — Infrastructure and traffic conditions
+
+These features help the model understand nuanced driver behavior patterns and their correlation with accident probability.
+
+### **Model Performance**
+- **RMSE:** 5.27  
+- **MAE:** 2.71  
+- **R² Score:** 0.974  
+
+These results demonstrate strong predictive accuracy and reliability in estimating accident probability based on recent driving behavior.
+
+---
+
+## 🗂️ Data Pipeline  
+
+1. **Data Ingestion** — Collect driving behavior and accident data
+2. **Data Cleaning** — Handle missing values and outliers
+3. **Feature Engineering** — Extract meaningful driving patterns
+4. **Encoding & Normalization** — Prepare data for model training
+5. **Dataset Merging** — Combine multiple data sources
+6. **Model Training** — Train XGBoost on historical data
+7. **Prediction** — Estimate accident probability
+8. **HDI Generation** — Calculate Safe Driving Index
+9. **UI Integration** — Send results to frontend
+
+---
+
+## 🧩 Recommendation System  
+
+The intelligent recommendation engine analyzes model output to generate personalized driving improvement suggestions:
+
+- **Speed Management** — Reduce excessive speeding behavior
+- **Task Completion** — Complete specific actions to raise HDI score
+- **Risk Avoidance** — Identify and avoid high-risk driving patterns
+- **Violation Resolution** — Pay outstanding traffic violations
+- **Consistency Improvement** — Maintain safe driving habits over time
+- **Behavior Correction** — Address specific unsafe driving behaviors
+
+### **Example Recommendation**
+
+To make the system clearer and more realistic, here's how recommendations work in practice:
+
+**Example:** If the model detects frequent hard braking, the system recommends:
+
+> *"Maintain a safer following distance and avoid sudden stops this week to improve your HDI score."*
+
+This personalized feedback helps drivers understand exactly what behaviors to modify for safer driving.
+
+---
+
+## 🖥️ Prototype UI  
+
+The interactive user interface includes:
+
+- **HDI Gauge** — Visual representation of safe driving score
+- **Accident Probability Display** — Real-time risk assessment
+- **Violations Overview** — Track and manage traffic violations
+- **Rewards & Levels** — Gamification elements to motivate safe driving
+- **Personalized Tasks** — Actionable recommendations
+- **Driving Indicators** — Detailed metrics and analytics
+- **Clean & User-Friendly Design** — Intuitive navigation and experience
+
+---
+
+## 🚀 Getting Started
+
+You can run **RoadRank** using the following methods:
+
+---
+
+### ⚙️ Run Directly with FastAPI
+
+1️⃣ **Install dependencies**
+```bash
+pip install -r requirements.txt
+```
+
+2️⃣ **Start the FastAPI application**
+```bash
+uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload
+```
+
+> Then open http://localhost:8000 in your browser.
+
+---
+
+
+### 🧠 Note
+- Ensure you have the trained model files (`xgboost_model.joblib` and `encoders.joblib`) in the `Model/` directory
+- Update configuration settings in `backend/main.py` as needed
 
 ---
 
 ## 🚀 Future Enhancements
 
-- **Database Integration**: Scale from Excel to PostgreSQL/MongoDB
-- **Real-time Sync**: WebSockets for live score updates
-- **Leaderboards**: Compare drivers and enable competition
-- **Mobile App**: Dedicated mobile dashboard
-- **Automated Tasks**: Tasks triggered by real driving events
-- **Push Notifications**: Notify drivers of new tasks and score changes
-- **Analytics Dashboard**: Track completion rates and impact
-- **Task Categories**: Group by Safety, Maintenance, Legal, etc.
+- **Model Improvement** — Enhance XGBoost accuracy with additional behavioral features and real-time data patterns
+- **Real-time Integration** — Connect with Absher API for live driving data collection and instant feedback
+- **Advanced Rewards System** — Expand gamification with achievements, leaderboards, and social challenges
+- **Mobile Application** — Develop native iOS and Android apps for seamless user experience
+- **Multi-city Support** — Extend coverage beyond Riyadh to other cities across Saudi Arabia
+- **Predictive Maintenance** — Add vehicle health monitoring and maintenance recommendations
+- **Driver Coaching** — Implement AI-powered personalized coaching and training modules
+- **Insurance Integration** — Partner with insurance providers for premium discounts based on HDI scores
+- **Fleet Management** — Expand system for commercial fleet monitoring and management
+- **Advanced Analytics** — Add comprehensive reporting dashboard for driving behavior trends
 
 ---
 
-## 👥 Team
+## 📊 Technical Stack
 
-- Nowf
-- Ruwaa
-- Joud
-- Aljwharah
+- **Machine Learning:** XGBoost, Scikit-learn, Pandas, NumPy
+- **Backend:** FastAPI, Python
+- **Frontend:** HTML, CSS, JavaScript
+- **Model Persistence:** Joblib
+- **Data Processing:** Excel, CSV
 
 ---
+
+## 👥 Team Members
+
+- **Aljwharah Almousa** 
+- **Joud Binjebrin**
+- **Nouf Bin Huwaidi**
+- **Ruwaa Surrati**
+
+---
+
