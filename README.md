@@ -1,6 +1,6 @@
 <p align="left">
-  <img src="./frontend/logohdi.png" alt="RoadRank Logo" width="100" style="float:left; margin-right:10px;"/>
-  <h1 style="display:inline;">RoadRank</h1>
+  <img src="./frontend/logohdi.png" alt="HDI Logo" width="100" style="float:left; margin-right:10px;"/>
+  <h1 style="display:inline;">Road Rank</h1>
 </p>
 
 **AI-Powered Safe Driving Prediction & Recommendation System**
@@ -17,13 +17,13 @@ There is a need for a proactive system that can:
 - Provide personalized recommendations to improve driving safety
 - Motivate drivers to maintain safe driving habits through gamification
 
-**RoadRank** was built to address this challenge by leveraging machine learning to predict accident probability and provide actionable insights for safer driving.
+**Road Rank** was built to address this challenge by leveraging machine learning to predict accident probability and provide actionable insights for safer driving.
 
 ---
 
 ## 💡 Solution  
 
-**RoadRank** uses machine learning to analyze driving behavior and predict accident probability, providing drivers with a personalized Safe Driving Index (HDI).
+**Road Rank** uses machine learning to analyze driving behavior and predict accident probability, providing drivers with a personalized Safe Driving Index (HDI).
 
 **How it works:**  
 1. **Data Collection:** Gathers driving behavior data from the last 30 days.
@@ -55,7 +55,7 @@ ROADRANK-ABSHER-HACKATHON/
 │
 ├── frontend/                        # User interface
 │   ├── HDI.html                     # Interactive UI prototype
-│   └── logohdi.png                  # RoadRank logo
+│   └── logohdi.png                  # HDI logo
 │
 └── README.md                        # Project documentation
 ```
@@ -170,7 +170,7 @@ The interactive user interface includes:
 
 ## 🚀 Getting Started
 
-You can run **RoadRank** using the following methods:
+You can run **Road Rank** using the following methods:
 
 ---
 
