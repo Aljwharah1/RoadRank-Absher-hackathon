@@ -190,21 +190,6 @@ uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload
 
 ---
 
-### 🐳 Run with Docker (Optional)
-
-1️⃣ **Build the Docker image**
-```bash
-docker build -t roadrank .
-```
-
-2️⃣ **Run the container**
-```bash
-docker run -p 8000:8000 roadrank
-```
-
-> The app will be available at http://localhost:8000
-
----
 
 ### 🧠 Note
 - Ensure you have the trained model files (`xgboost_model.joblib` and `encoders.joblib`) in the `Model/` directory
