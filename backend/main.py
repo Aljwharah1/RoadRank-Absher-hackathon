@@ -1,5 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 import joblib
 import pandas as pd
@@ -102,16 +104,21 @@ def prepare_for_predict(df: pd.DataFrame) -> pd.DataFrame:
                 df2[col] = pd.Categorical(df2[col]).codes
     return df2
 
+# Serve frontend HTML
 @app.get("/")
 async def root():
-    return {
-        "message": "RoadRank Prediction API",
-        "version": "1.0.0",
-        "endpoints": {
-            "predict": "/predict",
-            "health": "/health"
+    frontend_path = Path(__file__).parent.parent / "frontend" / "HDI.html"
+    if frontend_path.exists():
+        return FileResponse(str(frontend_path), media_type="text/html")
+    else:
+        return {
+            "message": "RoadRank Prediction API",
+            "version": "1.0.0",
+            "endpoints": {
+                "predict": "/predict",
+                "health": "/health"
+            }
         }
-    }
 
 @app.get("/health")
 async def health():
