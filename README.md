@@ -1,4 +1,7 @@
 <p align="left">
+  <img src="./frontend/logohdi.png" alt="RoadRank Logo" width="100" style="float:left; margin-right:10px;"/>
+  <h1 style="display:inline;">RoadRank</h1>
+</p><p align="left">
   <h1 style="display:inline;">RoadRank</h1>
 </p>
 
