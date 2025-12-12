@@ -1,7 +1,5 @@
 <p align="left">
   <img src="./frontend/logohdi.png" alt="RoadRank Logo" width="100" style="float:left; margin-right:10px;"/>
-
-</p><p align="left">
   <h1 style="display:inline;">RoadRank</h1>
 </p>
 
@@ -37,42 +35,29 @@ There is a need for a proactive system that can:
 
 ---
 
-## 🧩 RoadRank System Workflow  
-
-Below is the end-to-end workflow of **RoadRank**, showing how driving data flows through the system to produce HDI scores and recommendations.
-
-<!-- Add your workflow diagram here -->
-<!-- <p align="left">
-  <img src="./static/roadrank_workflow.png" alt="RoadRank System Workflow" width="850"/>
-</p> -->
-
----
-
 ## 🗂️ Project Structure 
 
 ```bash
 ROADRANK-ABSHER-HACKATHON/
 │
-├── Model/
-│   ├── XGBoost.ipynb
-│   ├── encoders.joblib
-│   └── xgboost_model.joblib
+├── Model/                           # Machine learning model and training
+│   ├── XGBoost.ipynb                # Model training notebook
+│   ├── encoders.joblib              # Feature encoders
+│   └── xgboost_model.joblib         # Trained XGBoost model
 │
-├── backend/
-│   ├── __pycache__/
-│   ├── main.cpython-313.pyc
-│   └── main.py
+├── backend/                         # Backend API and server logic
+│   └── main.py                      # FastAPI application entry point
 │
-├── data/
+├── data/                            # Training and testing datasets
 │   ├── Riyadh Roadway Environment.xlsx
 │   ├── Traffic Accident Statistics.xlsx
 │   └── Trip Summary.xlsx
 │
-├── frontend/
-│   ├── HDI.html
-│   └── logohdi.png          
+├── frontend/                        # User interface
+│   ├── HDI.html                     # Interactive UI prototype
+│   └── logohdi.png                  # RoadRank logo
 │
-└── README.md
+└── README.md                        # Project documentation
 ```
 
 ---
@@ -100,12 +85,35 @@ We trained an **XGBoost regression model** using:
 - Synthetic driver behavior patterns
 - Roadway environment characteristics
 
+### **Why XGBoost?**
+
+We selected XGBoost due to its:
+- **High performance on structured/tabular data** — Ideal for our driving behavior dataset
+- **Ability to model non-linear relationships** — Captures complex driving behavior patterns
+- **Robustness against missing or skewed data** — Handles real-world data imperfections
+- **Minimal need for extensive hyperparameter tuning** — Efficient development cycle
+- **Strong interpretability** — Feature importance metrics help explain predictions
+
+### **Key Features Used in the Model**
+
+The model was trained on behavioral and environmental signals strongly correlated with accident risk, including:
+
+- **Average driving speed** — Overall speed patterns
+- **Speed variance & extreme speeding frequency** — Consistency and risk-taking behavior
+- **Harsh braking events** — Sudden stops indicating reactive driving
+- **Trip duration & distance** — Exposure to road risks
+- **Night-time driving ratio** — Higher-risk time periods
+- **Violation count (past month)** — Historical rule-breaking behavior
+- **Road environment risk level** — Infrastructure and traffic conditions
+
+These features help the model understand nuanced driver behavior patterns and their correlation with accident probability.
+
 ### **Model Performance**
 - **RMSE:** 5.27  
 - **MAE:** 2.71  
 - **R² Score:** 0.974  
 
-These results demonstrate that the model is highly accurate in predicting accident probability based on recent driving behavior.
+These results demonstrate strong predictive accuracy and reliability in estimating accident probability based on recent driving behavior.
 
 ---
 
@@ -133,6 +141,16 @@ The intelligent recommendation engine analyzes model output to generate personal
 - **Violation Resolution** — Pay outstanding traffic violations
 - **Consistency Improvement** — Maintain safe driving habits over time
 - **Behavior Correction** — Address specific unsafe driving behaviors
+
+### **Example Recommendation**
+
+To make the system clearer and more realistic, here's how recommendations work in practice:
+
+**Example:** If the model detects frequent hard braking, the system recommends:
+
+> *"Maintain a safer following distance and avoid sudden stops this week to improve your HDI score."*
+
+This personalized feedback helps drivers understand exactly what behaviors to modify for safer driving.
 
 ---
 
@@ -172,13 +190,29 @@ uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload
 
 ---
 
+### 🐳 Run with Docker (Optional)
+
+1️⃣ **Build the Docker image**
+```bash
+docker build -t roadrank .
+```
+
+2️⃣ **Run the container**
+```bash
+docker run -p 8000:8000 roadrank
+```
+
+> The app will be available at http://localhost:8000
+
+---
+
 ### 🧠 Note
 - Ensure you have the trained model files (`xgboost_model.joblib` and `encoders.joblib`) in the `Model/` directory
 - Update configuration settings in `backend/main.py` as needed
 
 ---
 
-## 🚀 Future Work (Roadmap – Next 2 Weeks)  
+## 🚀 Future Enhancements
 
 - **Model Improvement** — Enhance XGBoost accuracy with additional behavioral features and real-time data patterns
 - **Real-time Integration** — Connect with Absher API for live driving data collection and instant feedback
@@ -206,8 +240,9 @@ uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload
 ## 👥 Team Members
 
 - **Aljwharah Almousa** 
-- **Joud Binjebrin** 
-- **Nouf Bin Huwaidi** 
+- **Joud Binjebrin**
+- **Nouf Bin Huwaidi**
 - **Ruwaa Surrati**
 
 ---
+
