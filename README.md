@@ -53,27 +53,26 @@ Below is the end-to-end workflow of **RoadRank**, showing how driving data flows
 ```bash
 ROADRANK-ABSHER-HACKATHON/
 │
-├── backend/                         # Backend API and server logic
-│   └── main.py                      # FastAPI application entry point
+├── Model/
+│   ├── XGBoost.ipynb
+│   ├── encoders.joblib
+│   └── xgboost_model.joblib
 │
-├── data/                            # Training and testing datasets
+├── backend/
+│   ├── __pycache__/
+│   ├── main.cpython-313.pyc
+│   └── main.py
+│
+├── data/
 │   ├── Riyadh Roadway Environment.xlsx
 │   ├── Traffic Accident Statistics.xlsx
 │   └── Trip Summary.xlsx
 │
-├── frontend/                        # User interface
-│   └── HDI.html                     # Interactive UI prototype
+├── frontend/
+│   ├── HDI.html
+│   └── logohdi.png          
 │
-├── Model/                           # Machine learning model and training
-│   ├── encoders.joblib              # Feature encoders
-│   ├── xgboost_model.joblib         # Trained XGBoost model
-│   └── XGBoost.ipynb                # Model training notebook
-│
-├── static/                          # Static assets (logos, diagrams)
-│
-├── requirements.txt                 # Python dependencies
-├── Dockerfile                       # Docker setup (optional)
-└── README.md                        # Project documentation
+└── README.md
 ```
 
 ---
@@ -181,18 +180,16 @@ uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload
 
 ## 🚀 Future Work (Roadmap – Next 2 Weeks)  
 
-### **Week 1**  
-- Improving XGBoost model accuracy with additional features
-- Enhancing recommendation engine logic with behavioral patterns
-- UI/UX refinements based on user testing feedback
-- Adding real-time data collection capabilities
-
-### **Week 2**  
-- Connecting all driving indicators to the backend
-- Developing advanced reward and leveling system
-- Preparing 70% complete prototype for demonstration
-- Initial integration testing with Absher API (conceptual)
-- Performance optimization and scalability improvements
+- **Model Improvement** — Enhance XGBoost accuracy with additional behavioral features and real-time data patterns
+- **Real-time Integration** — Connect with Absher API for live driving data collection and instant feedback
+- **Advanced Rewards System** — Expand gamification with achievements, leaderboards, and social challenges
+- **Mobile Application** — Develop native iOS and Android apps for seamless user experience
+- **Multi-city Support** — Extend coverage beyond Riyadh to other cities across Saudi Arabia
+- **Predictive Maintenance** — Add vehicle health monitoring and maintenance recommendations
+- **Driver Coaching** — Implement AI-powered personalized coaching and training modules
+- **Insurance Integration** — Partner with insurance providers for premium discounts based on HDI scores
+- **Fleet Management** — Expand system for commercial fleet monitoring and management
+- **Advanced Analytics** — Add comprehensive reporting dashboard for driving behavior trends
 
 ---
 
